@@ -52,4 +52,24 @@ public sealed partial class RospPreviewRow : ObservableObject
     public string? FsspPhoneOfHelpService2 { get; }
 
     public string? FsspWorkHours { get; }
+
+    /// <summary>
+    /// Возвращает нормализованную строку импорта без UI-состояния.
+    /// </summary>
+    public RospImportRow ToImportRow()
+    {
+        return new RospImportRow
+        {
+            SourceRowNumber = SourceRowNumber,
+            Region = Region,
+            Code = Code,
+            Name = Name,
+            Address = Address,
+            FsspChiefsFullName = FsspChiefsFullName,
+            FsspTelephoneNumber = FsspTelephoneNumber,
+            FsspPhoneOfHelpService = FsspPhoneOfHelpService,
+            FsspPhoneOfHelpService2 = FsspPhoneOfHelpService2,
+            FsspWorkHours = FsspWorkHours
+        };
+    }
 }

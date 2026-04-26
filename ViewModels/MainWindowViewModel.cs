@@ -176,6 +176,7 @@ public sealed partial class MainWindowViewModel : ViewModelBase
 
             var selectedRows = Rows
                 .Where(row => row.IsSelected)
+                .Select(row => row.ToImportRow())
                 .ToArray();
 
             var sql = _sqlGenerator.Generate(selectedRows);
