@@ -39,6 +39,7 @@ MinHeight="650">
 			<Setter Property="Padding" Value="0" />
 		</Style>
 
+
 		<Style Selector="Button.action-button">
 			<Setter Property="Height" Value="38" />
 			<Setter Property="MinWidth" Value="155" />
