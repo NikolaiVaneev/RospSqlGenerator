@@ -86,6 +86,9 @@ public sealed partial class MainWindowViewModel : ViewModelBase
     [ObservableProperty]
     private string? loadedFilePath;
 
+    [ObservableProperty]
+    private string sqlPreviewText = "Загрузите xlsx-файл и выберите строки для предпросмотра SQL.";
+
     public bool IsNotBusy => !IsBusy;
 
     private bool CanLoad() => !IsBusy;
@@ -292,8 +295,51 @@ public sealed partial class MainWindowViewModel : ViewModelBase
                 .GroupBy(row => row.Code, StringComparer.Ordinal)
                 .All(group => group.Count() == 1);
 
+        UpdateSqlPreviewText();
+
         LoadCommand.NotifyCanExecuteChanged();
         SaveCommand.NotifyCanExecuteChanged();
+    }
+
+    private void UpdateSqlPreviewText()
+    {
+        if (Rows.Count == 0)
+        {
+            SqlPreviewText = "Загрузите xlsx-файл и выберите строки для предпросмотра SQL.";
+            return;
+        }
+
+        if (HasImportErrors)
+        {
+            SqlPreviewText = "SQL-предпросмотр недоступен: исправьте ошибки импорта.";
+            return;
+        }
+
+        if (SelectedCount == 0)
+        {
+            SqlPreviewText = "SQL-предпросмотр недоступен: выберите хотя бы одну строку.";
+            return;
+        }
+
+        if (ConflictCount > 0)
+        {
+            SqlPreviewText = "SQL-предпросмотр недоступен: разрешите конфликты дублей по коду.";
+            return;
+        }
+
+        try
+        {
+            var selectedRows = Rows
+                .Where(row => row.IsSelected)
+                .Select(row => row.ToImportRow())
+                .ToArray();
+
+            SqlPreviewText = _sqlGenerator.Generate(selectedRows);
+        }
+        catch (Exception exception)
+        {
+            SqlPreviewText = $"SQL-предпросмотр недоступен: {exception.Message}";
+        }
     }
 
     private void RefreshFilteredRows()

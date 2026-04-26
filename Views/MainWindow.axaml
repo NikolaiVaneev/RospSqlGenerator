@@ -1,539 +1,480 @@
 <Window
-x:Class="RospSqlGenerator.Views.MainWindow"
-xmlns="https://github.com/avaloniaui"
-xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-xmlns:converters="using:RospSqlGenerator.Converters"
-xmlns:models="using:RospSqlGenerator.Models"
-xmlns:vm="using:RospSqlGenerator.ViewModels"
-x:DataType="vm:MainWindowViewModel"
-Title="Генератор SQL обновления РОСП"
-WindowStartupLocation="CenterScreen"
-Width="1400"
-Height="820"
-MinWidth="1200"
-MinHeight="650">
-
-	<Window.Resources>
-		<converters:ConflictBackgroundBrushConverter x:Key="ConflictBackgroundBrushConverter" />
-		<converters:BoolToOpacityConverter x:Key="BoolToOpacityConverter" />
-
-		<StreamGeometry x:Key="ExcelIconGeometry">
-			M2.85858 2.87732L15.4293 1.0815C15.7027 1.04245 15.9559 1.2324 15.995 1.50577C15.9983 1.52919 16 1.55282 16 1.57648V22.4235C16 22.6996 15.7761 22.9235 15.5 22.9235C15.4763 22.9235 15.4527 22.9218 15.4293 22.9184L2.85858 21.1226C2.36593 21.0522 2 20.6303 2 20.1327V3.86727C2 3.36962 2.36593 2.9477 2.85858 2.87732ZM4 4.73457V19.2654L14 20.694V3.30599L4 4.73457ZM17 19H20V4.99997H17V2.99997H21C21.5523 2.99997 22 3.44769 22 3.99997V20C22 20.5523 21.5523 21 21 21H17V19ZM10.2 12L13 16H10.6L9 13.7143L7.39999 16H5L7.8 12L5 7.99997H7.39999L9 10.2857L10.6 7.99997H13L10.2 12Z
-		</StreamGeometry>
-
-		<StreamGeometry x:Key="SaveIconGeometry">
-			M18 19H19V6.82843L17.1716 5H16V9H7V5H5V19H6V12H18V19ZM4 3H18L20.7071 5.70711C20.8946 5.89464 21 6.149 21 6.41421V20C21 20.5523 20.5523 21 20 21H4C3.44772 21 3 20.5523 3 20V4C3 3.44772 3.44772 3 4 3ZM8 14V19H16V14H8Z
-		</StreamGeometry>
-	</Window.Resources>
-
-	<Window.Styles>
-		<Style Selector="DataGridColumnHeader">
-			<Setter Property="FontSize" Value="12" />
-			<Setter Property="FontWeight" Value="Normal" />
-			<Setter Property="MinHeight" Value="26" />
-			<Setter Property="Padding" Value="6,0" />
-		</Style>
-
-		<Style Selector="DataGridCell">
-			<Setter Property="FontSize" Value="12" />
-			<Setter Property="Padding" Value="0" />
-		</Style>
-
-
-		<Style Selector="Button.action-button">
-			<Setter Property="Height" Value="38" />
-			<Setter Property="MinWidth" Value="155" />
-			<Setter Property="Padding" Value="16,0" />
-			<Setter Property="CornerRadius" Value="8" />
-			<Setter Property="FontSize" Value="13" />
-			<Setter Property="FontWeight" Value="SemiBold" />
-		</Style>
-
-		<Style Selector="Button.primary">
-			<Setter Property="Background" Value="#2563EB" />
-			<Setter Property="Foreground" Value="White" />
-		</Style>
-
-		<Style Selector="Button.primary PathIcon">
-			<Setter Property="Foreground" Value="White" />
-		</Style>
-
-		<Style Selector="Button.primary TextBlock">
-			<Setter Property="Foreground" Value="White" />
-		</Style>
-
-		<Style Selector="Button.primary:pointerover">
-			<Setter Property="Background" Value="#E5E7EB" />
-			<Setter Property="Foreground" Value="#111827" />
-		</Style>
-
-		<Style Selector="Button.primary:pointerover PathIcon">
-			<Setter Property="Foreground" Value="#111827" />
-		</Style>
-
-		<Style Selector="Button.primary:pointerover TextBlock">
-			<Setter Property="Foreground" Value="#111827" />
-		</Style>
-
-		<Style Selector="Button.primary:pressed">
-			<Setter Property="Background" Value="#D1D5DB" />
-			<Setter Property="Foreground" Value="#111827" />
-		</Style>
-
-		<Style Selector="Button.primary:pressed PathIcon">
-			<Setter Property="Foreground" Value="#111827" />
-		</Style>
-
-		<Style Selector="Button.primary:pressed TextBlock">
-			<Setter Property="Foreground" Value="#111827" />
-		</Style>
-
-		<Style Selector="Button.secondary">
-			<Setter Property="Background" Value="#E5E7EB" />
-			<Setter Property="Foreground" Value="#374151" />
-		</Style>
-
-		<Style Selector="Button.secondary:pointerover">
-			<Setter Property="Background" Value="#D1D5DB" />
-			<Setter Property="Foreground" Value="#111827" />
-		</Style>
-
-		<Style Selector="Button.secondary:pressed">
-			<Setter Property="Background" Value="#CBD5E1" />
-			<Setter Property="Foreground" Value="#111827" />
-		</Style>
-
-		<Style Selector="Button:disabled">
-			<Setter Property="Opacity" Value="0.55" />
-		</Style>
-
-	</Window.Styles>
-
-	<Grid RowDefinitions="Auto,Auto,*,Auto"
-		  Background="#F5F7FA">
-
-		<!-- Верхняя панель -->
-		<Border Grid.Row="0"
-				Background="#FFFFFF"
-				BorderBrush="#D8DEE8"
-				BorderThickness="0,0,0,1"
-				Padding="20,16">
-
-			<Grid ColumnDefinitions="*,Auto">
-				<StackPanel Spacing="4">
-					<TextBlock Text="Генератор SQL обновления справочника РОСП"
-							   FontSize="22"
-							   FontWeight="SemiBold"
-							   Foreground="#1F2937" />
-
-					<TextBlock Text="Загрузите xlsx-файл, проверьте нормализованные записи и сохраните SQL-скрипт."
-							   FontSize="13"
-							   Foreground="#6B7280" />
-				</StackPanel>
-
-				<StackPanel Grid.Column="1"
-							Orientation="Horizontal"
-							Spacing="10"
-							VerticalAlignment="Center">
-
-					<Button Command="{Binding LoadCommand}" Cursor="Hand"
-							Classes="action-button primary">
-						<StackPanel Orientation="Horizontal"
-									Spacing="8"
-									VerticalAlignment="Center">
-							<PathIcon Data="{StaticResource ExcelIconGeometry}"
-									  Width="18"
-									  Height="18"
-									  VerticalAlignment="Center" />
-							<TextBlock Text="Загрузить xlsx"
-									   VerticalAlignment="Center" />
-						</StackPanel>
-					</Button>
-
-					<Button Command="{Binding SaveCommand}" Cursor="Hand"
-							Classes="action-button secondary">
-						<StackPanel Orientation="Horizontal"
-									Spacing="8"
-									VerticalAlignment="Center">
-							<PathIcon Data="{StaticResource SaveIconGeometry}"
-									  Width="18"
-									  Height="18"
-									  Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
-									  VerticalAlignment="Center" />
-							<TextBlock Text="Сохранить SQL"
-									   VerticalAlignment="Center" />
-						</StackPanel>
-					</Button>
-				</StackPanel>
-			</Grid>
-		</Border>
-
-		<!-- Сводка и сообщения -->
-		<Grid Grid.Row="1"
-			  ColumnDefinitions="*,Auto"
-			  Margin="20,16,20,4">
-
-			<StackPanel Spacing="10">
-				<Border Background="#FFFFFF"
-						BorderBrush="#D8DEE8"
-						BorderThickness="1"
-						CornerRadius="10"
-						Padding="14"
-						Height="70">
-
-					<Grid ColumnDefinitions="Auto,Auto,Auto,Auto,*"
-						  ColumnSpacing="20">
-
-						<StackPanel>
-							<TextBlock Text="Всего строк"
-									   FontSize="12"
-									   Foreground="#6B7280" />
-							<TextBlock Text="{Binding TotalCount}"
-									   FontSize="20"
-									   FontWeight="SemiBold"
-									   Foreground="#111827" />
-						</StackPanel>
-
-						<StackPanel Grid.Column="1">
-							<TextBlock Text="Выбрано"
-									   FontSize="12"
-									   Foreground="#6B7280" />
-							<TextBlock Text="{Binding SelectedCount}"
-									   FontSize="20"
-									   FontWeight="SemiBold"
-									   Foreground="#111827" />
-						</StackPanel>
-
-						<StackPanel Grid.Column="2">
-							<TextBlock Text="Групп дублей"
-									   FontSize="12"
-									   Foreground="#6B7280" />
-							<TextBlock Text="{Binding DuplicateGroupCount}"
-									   FontSize="20"
-									   FontWeight="SemiBold"
-									   Foreground="#111827" />
-						</StackPanel>
-
-						<StackPanel Grid.Column="3">
-							<TextBlock Text="Конфликтов"
-									   FontSize="12"
-									   Foreground="#6B7280" />
-							<TextBlock Text="{Binding ConflictCount}"
-									   FontSize="20"
-									   FontWeight="SemiBold"
-									   Foreground="#B91C1C" />
-						</StackPanel>
-
-						<StackPanel Grid.Column="4" Orientation="Horizontal" Spacing="20"
-									HorizontalAlignment="Right"
-									VerticalAlignment="Center">
-							<CheckBox Content="Только группы дублей" FontSize="13"
-									  IsChecked="{Binding ShowOnlyConflicts}" />
-
-							<CheckBox Content="Выбрать все" FontSize="13"
-									  IsThreeState="True"
-									  IsChecked="{Binding SelectAllState, Mode=TwoWay}" />
-						</StackPanel>
-					</Grid>
-				</Border>
-
-				<ItemsControl ItemsSource="{Binding Messages}">
-					<ItemsControl.ItemTemplate>
-						<DataTemplate>
-							<Border Background="#FFF7ED"
-									BorderBrush="#FED7AA"
-									BorderThickness="1"
-									CornerRadius="8"
-									Padding="10"
-									Margin="0,0,0,6">
-								<TextBlock Text="{Binding}"
-										   TextWrapping="Wrap"
-										   Foreground="#9A3412" />
-							</Border>
-						</DataTemplate>
-					</ItemsControl.ItemTemplate>
-				</ItemsControl>
-			</StackPanel>
-
-			<Border Grid.Column="1"
-					Background="#FFFFFF"
-					BorderBrush="#D8DEE8"
-					BorderThickness="1"
-					CornerRadius="10"
-					Padding="14"
-					Margin="16,0,0,0"
-					MinWidth="430"
-					Height="70"
-					VerticalAlignment="Top">
-
-				<StackPanel Spacing="6">
-					<TextBlock Text="Текущий файл"
-							   FontSize="12"
-							   Foreground="#6B7280" />
-
-					<TextBlock Text="{Binding LoadedFilePath, TargetNullValue='Файл не выбран'}"
-							   FontSize="13"
-							   Foreground="#111827"
-							   TextTrimming="CharacterEllipsis"
-							   TextWrapping="NoWrap" />
-
-				</StackPanel>
-			</Border>
-		</Grid>
-
-		<!-- Таблица -->
-		<Border Grid.Row="2"
-				Margin="20,0,20,16"
-				Background="#FFFFFF"
-				BorderBrush="#D8DEE8"
-				BorderThickness="1"
-				CornerRadius="10"
-				ClipToBounds="True">
-
-			<DataGrid x:Name="RospsGrid"
-					  ItemsSource="{Binding FilteredRows}"
-					  AutoGenerateColumns="False"
-					  CanUserResizeColumns="True"
-					  CanUserSortColumns="True"
-					  GridLinesVisibility="Horizontal"
-					  HeadersVisibility="Column"
-					  IsReadOnly="False"
-					  RowHeight="30"
-					  FontSize="12"
-					  BorderThickness="0">
-
-				<DataGrid.Columns>
-
-					<DataGridTemplateColumn Header=""
-											Width="48"
-											CanUserSort="False">
-						<DataGridTemplateColumn.CellTemplate>
-							<DataTemplate x:DataType="models:RospPreviewRow">
-								<Border Background="{Binding HasConflict, Converter={StaticResource ConflictBackgroundBrushConverter}}"
-										Padding="8,0">
-									<CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}"
-											  HorizontalAlignment="Center"
-											  VerticalAlignment="Center" />
-								</Border>
-							</DataTemplate>
-						</DataGridTemplateColumn.CellTemplate>
-					</DataGridTemplateColumn>
-
-					<DataGridTemplateColumn Header="Строка"
-											SortMemberPath="SourceRowNumber"
-											Width="90">
-						<DataGridTemplateColumn.CellTemplate>
-							<DataTemplate x:DataType="models:RospPreviewRow">
-								<Border Background="{Binding HasConflict, Converter={StaticResource ConflictBackgroundBrushConverter}}"
-										Padding="8,0">
-									<TextBlock Text="{Binding SourceRowNumber}"
-											   VerticalAlignment="Center" />
-								</Border>
-							</DataTemplate>
-						</DataGridTemplateColumn.CellTemplate>
-					</DataGridTemplateColumn>
-
-					<DataGridTemplateColumn Header="Регион"
-											SortMemberPath="Region"
-											Width="90">
-						<DataGridTemplateColumn.CellTemplate>
-							<DataTemplate x:DataType="models:RospPreviewRow">
-								<Border Background="{Binding HasConflict, Converter={StaticResource ConflictBackgroundBrushConverter}}"
-										Padding="8,0">
-									<TextBlock Text="{Binding Region}"
-											   VerticalAlignment="Center" />
-								</Border>
-							</DataTemplate>
-						</DataGridTemplateColumn.CellTemplate>
-					</DataGridTemplateColumn>
-
-					<DataGridTemplateColumn Header="Код"
-											SortMemberPath="Code"
-											Width="100">
-						<DataGridTemplateColumn.CellTemplate>
-							<DataTemplate x:DataType="models:RospPreviewRow">
-								<Border Background="{Binding HasConflict, Converter={StaticResource ConflictBackgroundBrushConverter}}"
-										Padding="8,0">
-									<TextBlock Text="{Binding Code}"
-											   VerticalAlignment="Center" />
-								</Border>
-							</DataTemplate>
-						</DataGridTemplateColumn.CellTemplate>
-					</DataGridTemplateColumn>
-
-					<DataGridTemplateColumn Header="Наименование"
-											SortMemberPath="Name"
-											Width="320">
-						<DataGridTemplateColumn.CellTemplate>
-							<DataTemplate x:DataType="models:RospPreviewRow">
-								<Border Background="{Binding HasConflict, Converter={StaticResource ConflictBackgroundBrushConverter}}"
-										Padding="8,0">
-									<TextBlock Text="{Binding Name}"
-											   VerticalAlignment="Center"
-											   TextTrimming="CharacterEllipsis" />
-								</Border>
-							</DataTemplate>
-						</DataGridTemplateColumn.CellTemplate>
-					</DataGridTemplateColumn>
-
-					<DataGridTemplateColumn Header="Адрес"
-											SortMemberPath="Address"
-											Width="360">
-						<DataGridTemplateColumn.CellTemplate>
-							<DataTemplate x:DataType="models:RospPreviewRow">
-								<Border Background="{Binding HasConflict, Converter={StaticResource ConflictBackgroundBrushConverter}}"
-										Padding="8,0">
-									<TextBlock Text="{Binding Address}"
-											   VerticalAlignment="Center"
-											   TextTrimming="CharacterEllipsis" />
-								</Border>
-							</DataTemplate>
-						</DataGridTemplateColumn.CellTemplate>
-					</DataGridTemplateColumn>
-
-					<DataGridTemplateColumn Header="Начальник"
-											SortMemberPath="FsspChiefsFullName"
-											Width="220">
-						<DataGridTemplateColumn.CellTemplate>
-							<DataTemplate x:DataType="models:RospPreviewRow">
-								<Border Background="{Binding HasConflict, Converter={StaticResource ConflictBackgroundBrushConverter}}"
-										Padding="8,0">
-									<TextBlock Text="{Binding FsspChiefsFullName}"
-											   VerticalAlignment="Center"
-											   TextTrimming="CharacterEllipsis" />
-								</Border>
-							</DataTemplate>
-						</DataGridTemplateColumn.CellTemplate>
-					</DataGridTemplateColumn>
-
-					<DataGridTemplateColumn Header="Телефон"
-											Width="160">
-						<DataGridTemplateColumn.CellTemplate>
-							<DataTemplate x:DataType="models:RospPreviewRow">
-								<Border Background="{Binding HasConflict, Converter={StaticResource ConflictBackgroundBrushConverter}}"
-										Padding="8,0">
-									<TextBlock Text="{Binding FsspTelephoneNumber}"
-											   VerticalAlignment="Center"
-											   TextTrimming="CharacterEllipsis" />
-								</Border>
-							</DataTemplate>
-						</DataGridTemplateColumn.CellTemplate>
-					</DataGridTemplateColumn>
-
-					<DataGridTemplateColumn Header="Телефон поддержки"
-											SortMemberPath="FsspPhoneOfHelpService"
-											Width="180">
-						<DataGridTemplateColumn.CellTemplate>
-							<DataTemplate x:DataType="models:RospPreviewRow">
-								<Border Background="{Binding HasConflict, Converter={StaticResource ConflictBackgroundBrushConverter}}"
-										Padding="8,0">
-									<TextBlock Text="{Binding FsspPhoneOfHelpService}"
-											   VerticalAlignment="Center"
-											   TextTrimming="CharacterEllipsis" />
-								</Border>
-							</DataTemplate>
-						</DataGridTemplateColumn.CellTemplate>
-					</DataGridTemplateColumn>
-
-					<DataGridTemplateColumn Header="Телефон поддержки 2"
-											SortMemberPath="FsspPhoneOfHelpService2"
-											Width="190">
-						<DataGridTemplateColumn.CellTemplate>
-							<DataTemplate x:DataType="models:RospPreviewRow">
-								<Border Background="{Binding HasConflict, Converter={StaticResource ConflictBackgroundBrushConverter}}"
-										Padding="8,0">
-									<TextBlock Text="{Binding FsspPhoneOfHelpService2}"
-											   VerticalAlignment="Center"
-											   TextTrimming="CharacterEllipsis" />
-								</Border>
-							</DataTemplate>
-						</DataGridTemplateColumn.CellTemplate>
-					</DataGridTemplateColumn>
-
-					<DataGridTemplateColumn Header="Режим работы"
-											SortMemberPath="FsspWorkHours"
-											Width="300">
-						<DataGridTemplateColumn.CellTemplate>
-							<DataTemplate x:DataType="models:RospPreviewRow">
-								<Border Background="{Binding HasConflict, Converter={StaticResource ConflictBackgroundBrushConverter}}"
-										Padding="8,0">
-									<TextBlock Text="{Binding FsspWorkHours}"
-											   VerticalAlignment="Center"
-											   TextTrimming="CharacterEllipsis" />
-								</Border>
-							</DataTemplate>
-						</DataGridTemplateColumn.CellTemplate>
-					</DataGridTemplateColumn>
-
-					<DataGridTemplateColumn Header="Проблема"
-											SortMemberPath="ValidationError"
-											Width="280">
-						<DataGridTemplateColumn.CellTemplate>
-							<DataTemplate x:DataType="models:RospPreviewRow">
-								<Border Background="{Binding HasConflict, Converter={StaticResource ConflictBackgroundBrushConverter}}"
-										Padding="8,0">
-									<TextBlock Text="{Binding ValidationError}"
-											   VerticalAlignment="Center"
-											   Foreground="#B91C1C"
-											   TextTrimming="CharacterEllipsis" />
-								</Border>
-							</DataTemplate>
-						</DataGridTemplateColumn.CellTemplate>
-					</DataGridTemplateColumn>
-
-				</DataGrid.Columns>
-			</DataGrid>
-		</Border>
-
-		<!-- Нижняя строка состояния -->
-		<Border Grid.Row="3"
-				Background="#FFFFFF"
-				BorderBrush="#D8DEE8"
-				BorderThickness="0,1,0,0"
-				Padding="20,10">
-
-			<Grid ColumnDefinitions="*,Auto">
-				<TextBlock Text="{Binding Status}"
-						   VerticalAlignment="Center"
-						   Foreground="#374151"
-						   TextTrimming="CharacterEllipsis" />
-
-				<TextBlock Grid.Column="1"
-						   Text="SQL формируется только по выбранным строкам без конфликтов по коду."
-						   VerticalAlignment="Center"
-						   Foreground="#6B7280" />
-			</Grid>
-		</Border>
-
-		<Border Grid.RowSpan="4"
-				Background="#66000000"
-				Opacity="{Binding IsBusy, Converter={StaticResource BoolToOpacityConverter}}"
-				IsHitTestVisible="{Binding IsBusy}"
-				ZIndex="100">
-
-			<Border Width="320"
-					Padding="24"
-					Background="#FFFFFF"
-					CornerRadius="14"
-					HorizontalAlignment="Center"
-					VerticalAlignment="Center">
-
-				<StackPanel Spacing="14">
-					<ProgressBar IsIndeterminate="True"
-								 Height="6" />
-
-					<TextBlock Text="{Binding Status}"
-							   FontSize="14"
-							   FontWeight="SemiBold"
-							   TextAlignment="Center"
-							   TextWrapping="Wrap" />
-
-					<TextBlock Text="Пожалуйста, подождите..."
-							   FontSize="12"
-							   Foreground="#6B7280"
-							   TextAlignment="Center" />
-				</StackPanel>
-			</Border>
-		</Border>
-	</Grid>
+    x:Class="RospSqlGenerator.Views.MainWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="using:RospSqlGenerator.Converters"
+    xmlns:models="using:RospSqlGenerator.Models"
+    xmlns:vm="using:RospSqlGenerator.ViewModels"
+    x:DataType="vm:MainWindowViewModel"
+    Title="Генератор SQL обновления РОСП"
+    WindowStartupLocation="CenterScreen"
+    Width="1400"
+    Height="820"
+    MinWidth="1200"
+    MinHeight="650">
+
+    <Window.Resources>
+        <converters:ConflictBackgroundBrushConverter x:Key="ConflictBackgroundBrushConverter" />
+        <converters:BoolToOpacityConverter x:Key="BoolToOpacityConverter" />
+
+        <StreamGeometry x:Key="ExcelIconGeometry">
+            M2.85858 2.87732L15.4293 1.0815C15.7027 1.04245 15.9559 1.2324 15.995 1.50577C15.9983 1.52919 16 1.55282 16 1.57648V22.4235C16 22.6996 15.7761 22.9235 15.5 22.9235C15.4763 22.9235 15.4527 22.9218 15.4293 22.9184L2.85858 21.1226C2.36593 21.0522 2 20.6303 2 20.1327V3.86727C2 3.36962 2.36593 2.9477 2.85858 2.87732ZM4 4.73457V19.2654L14 20.694V3.30599L4 4.73457ZM17 19H20V4.99997H17V2.99997H21C21.5523 2.99997 22 3.44769 22 3.99997V20C22 20.5523 21.5523 21 21 21H17V19ZM10.2 12L13 16H10.6L9 13.7143L7.39999 16H5L7.8 12L5 7.99997H7.39999L9 10.2857L10.6 7.99997H13L10.2 12Z
+        </StreamGeometry>
+
+        <StreamGeometry x:Key="SaveIconGeometry">
+            M18 19H19V6.82843L17.1716 5H16V9H7V5H5V19H6V12H18V19ZM4 3H18L20.7071 5.70711C20.8946 5.89464 21 6.149 21 6.41421V20C21 20.5523 20.5523 21 20 21H4C3.44772 21 3 20.5523 3 20V4C3 3.44772 3.44772 3 4 3ZM8 14V19H16V14H8Z
+        </StreamGeometry>
+    </Window.Resources>
+
+    <Window.Styles>
+        <Style Selector="DataGridColumnHeader">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontWeight" Value="Normal" />
+            <Setter Property="MinHeight" Value="26" />
+            <Setter Property="Padding" Value="6,0" />
+        </Style>
+
+        <Style Selector="DataGridCell">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Padding" Value="0" />
+        </Style>
+
+        <Style Selector="Button.action-button">
+            <Setter Property="Height" Value="38" />
+            <Setter Property="MinWidth" Value="155" />
+            <Setter Property="Padding" Value="16,0" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+
+        <Style Selector="Button.primary">
+            <Setter Property="Background" Value="#2563EB" />
+            <Setter Property="Foreground" Value="White" />
+        </Style>
+
+        <Style Selector="Button.primary PathIcon">
+            <Setter Property="Foreground" Value="White" />
+        </Style>
+
+        <Style Selector="Button.primary TextBlock">
+            <Setter Property="Foreground" Value="White" />
+        </Style>
+
+        <Style Selector="Button.primary:pointerover">
+            <Setter Property="Background" Value="#E5E7EB" />
+            <Setter Property="Foreground" Value="#111827" />
+        </Style>
+
+        <Style Selector="Button.primary:pointerover PathIcon">
+            <Setter Property="Foreground" Value="#111827" />
+        </Style>
+
+        <Style Selector="Button.primary:pointerover TextBlock">
+            <Setter Property="Foreground" Value="#111827" />
+        </Style>
+
+        <Style Selector="Button.primary:pressed">
+            <Setter Property="Background" Value="#D1D5DB" />
+            <Setter Property="Foreground" Value="#111827" />
+        </Style>
+
+        <Style Selector="Button.primary:pressed PathIcon">
+            <Setter Property="Foreground" Value="#111827" />
+        </Style>
+
+        <Style Selector="Button.primary:pressed TextBlock">
+            <Setter Property="Foreground" Value="#111827" />
+        </Style>
+
+        <Style Selector="Button.secondary">
+            <Setter Property="Background" Value="#E5E7EB" />
+            <Setter Property="Foreground" Value="#374151" />
+        </Style>
+
+        <Style Selector="Button.secondary:pointerover">
+            <Setter Property="Background" Value="#D1D5DB" />
+            <Setter Property="Foreground" Value="#111827" />
+        </Style>
+
+        <Style Selector="Button.secondary:pressed">
+            <Setter Property="Background" Value="#CBD5E1" />
+            <Setter Property="Foreground" Value="#111827" />
+        </Style>
+
+        <Style Selector="Button:disabled">
+            <Setter Property="Opacity" Value="0.55" />
+        </Style>
+    </Window.Styles>
+
+    <Grid RowDefinitions="Auto,Auto,*,Auto" Background="#F5F7FA">
+        <Border
+            Grid.Row="0"
+            Background="#FFFFFF"
+            BorderBrush="#D8DEE8"
+            BorderThickness="0,0,0,1"
+            Padding="20,16">
+
+            <Grid ColumnDefinitions="*,Auto">
+                <StackPanel Spacing="4">
+                    <TextBlock
+                        Text="Генератор SQL обновления справочника РОСП"
+                        FontSize="22"
+                        FontWeight="SemiBold"
+                        Foreground="#1F2937" />
+
+                    <TextBlock
+                        Text="Загрузите xlsx-файл, проверьте нормализованные записи и сохраните SQL-скрипт."
+                        FontSize="13"
+                        Foreground="#6B7280" />
+                </StackPanel>
+
+                <StackPanel
+                    Grid.Column="1"
+                    Orientation="Horizontal"
+                    Spacing="10"
+                    VerticalAlignment="Center">
+
+                    <Button Command="{Binding LoadCommand}" Cursor="Hand" Classes="action-button primary">
+                        <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                            <PathIcon
+                                Data="{StaticResource ExcelIconGeometry}"
+                                Width="18"
+                                Height="18"
+                                VerticalAlignment="Center" />
+                            <TextBlock Text="Загрузить xlsx" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button Command="{Binding SaveCommand}" Cursor="Hand" Classes="action-button secondary">
+                        <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                            <PathIcon
+                                Data="{StaticResource SaveIconGeometry}"
+                                Width="18"
+                                Height="18"
+                                Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                VerticalAlignment="Center" />
+                            <TextBlock Text="Сохранить SQL" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="1" ColumnDefinitions="*,Auto" Margin="20,16,20,4">
+            <StackPanel Spacing="10">
+                <Border
+                    Background="#FFFFFF"
+                    BorderBrush="#D8DEE8"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    Padding="14"
+                    Height="70">
+
+                    <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,*" ColumnSpacing="20">
+                        <StackPanel>
+                            <TextBlock Text="Всего строк" FontSize="12" Foreground="#6B7280" />
+                            <TextBlock Text="{Binding TotalCount}" FontSize="20" FontWeight="SemiBold" Foreground="#111827" />
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="1">
+                            <TextBlock Text="Выбрано" FontSize="12" Foreground="#6B7280" />
+                            <TextBlock Text="{Binding SelectedCount}" FontSize="20" FontWeight="SemiBold" Foreground="#111827" />
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="Групп дублей" FontSize="12" Foreground="#6B7280" />
+                            <TextBlock Text="{Binding DuplicateGroupCount}" FontSize="20" FontWeight="SemiBold" Foreground="#111827" />
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="3">
+                            <TextBlock Text="Конфликтов" FontSize="12" Foreground="#6B7280" />
+                            <TextBlock Text="{Binding ConflictCount}" FontSize="20" FontWeight="SemiBold" Foreground="#B91C1C" />
+                        </StackPanel>
+
+                        <StackPanel
+                            Grid.Column="4"
+                            Orientation="Horizontal"
+                            Spacing="20"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center">
+                            <CheckBox
+                                Content="Только группы дублей"
+                                FontSize="13"
+                                IsChecked="{Binding ShowOnlyConflicts}" />
+
+                            <CheckBox
+                                Content="Выбрать все"
+                                FontSize="13"
+                                IsThreeState="True"
+                                IsChecked="{Binding SelectAllState, Mode=TwoWay}" />
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <ItemsControl ItemsSource="{Binding Messages}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border
+                                Background="#FFF7ED"
+                                BorderBrush="#FED7AA"
+                                BorderThickness="1"
+                                CornerRadius="8"
+                                Padding="10"
+                                Margin="0,0,0,6">
+                                <TextBlock Text="{Binding}" TextWrapping="Wrap" Foreground="#9A3412" />
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+
+            <Border
+                Grid.Column="1"
+                Background="#FFFFFF"
+                BorderBrush="#D8DEE8"
+                BorderThickness="1"
+                CornerRadius="8"
+                Padding="14"
+                Margin="16,0,0,0"
+                MinWidth="430"
+                Height="70"
+                VerticalAlignment="Top">
+
+                <StackPanel Spacing="6">
+                    <TextBlock Text="Текущий файл" FontSize="12" Foreground="#6B7280" />
+
+                    <TextBlock
+                        Text="{Binding LoadedFilePath, TargetNullValue='Файл не выбран'}"
+                        FontSize="13"
+                        Foreground="#111827"
+                        TextTrimming="CharacterEllipsis"
+                        TextWrapping="NoWrap" />
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <TabControl Grid.Row="2" Margin="20,0,20,16">
+            <TabItem Header="Таблица">
+                <Border
+                    Background="#FFFFFF"
+                    BorderBrush="#D8DEE8"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    ClipToBounds="True">
+
+                    <DataGrid
+                        x:Name="RospsGrid"
+                        ItemsSource="{Binding FilteredRows}"
+                        AutoGenerateColumns="False"
+                        CanUserResizeColumns="True"
+                        CanUserSortColumns="True"
+                        GridLinesVisibility="Horizontal"
+                        HeadersVisibility="Column"
+                        IsReadOnly="False"
+                        RowHeight="30"
+                        FontSize="12"
+                        BorderThickness="0">
+
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn Header="" Width="48" CanUserSort="False">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate x:DataType="models:RospPreviewRow">
+                                        <Border Background="{Binding HasConflict, Converter={StaticResource ConflictBackgroundBrushConverter}}" Padding="8,0">
+                                            <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                        </Border>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTemplateColumn Header="Строка" SortMemberPath="SourceRowNumber" Width="90">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate x:DataType="models:RospPreviewRow">
+                                        <Border Background="{Binding HasConflict, Converter={StaticResource ConflictBackgroundBrushConverter}}" Padding="8,0">
+                                            <TextBlock Text="{Binding SourceRowNumber}" VerticalAlignment="Center" />
+                                        </Border>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTemplateColumn Header="Регион" SortMemberPath="Region" Width="90">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate x:DataType="models:RospPreviewRow">
+                                        <Border Background="{Binding HasConflict, Converter={StaticResource ConflictBackgroundBrushConverter}}" Padding="8,0">
+                                            <TextBlock Text="{Binding Region}" VerticalAlignment="Center" />
+                                        </Border>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTemplateColumn Header="Код" SortMemberPath="Code" Width="100">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate x:DataType="models:RospPreviewRow">
+                                        <Border Background="{Binding HasConflict, Converter={StaticResource ConflictBackgroundBrushConverter}}" Padding="8,0">
+                                            <TextBlock Text="{Binding Code}" VerticalAlignment="Center" />
+                                        </Border>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTemplateColumn Header="Наименование" SortMemberPath="Name" Width="320">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate x:DataType="models:RospPreviewRow">
+                                        <Border Background="{Binding HasConflict, Converter={StaticResource ConflictBackgroundBrushConverter}}" Padding="8,0">
+                                            <TextBlock Text="{Binding Name}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
+                                        </Border>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTemplateColumn Header="Адрес" SortMemberPath="Address" Width="360">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate x:DataType="models:RospPreviewRow">
+                                        <Border Background="{Binding HasConflict, Converter={StaticResource ConflictBackgroundBrushConverter}}" Padding="8,0">
+                                            <TextBlock Text="{Binding Address}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
+                                        </Border>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTemplateColumn Header="Начальник" SortMemberPath="FsspChiefsFullName" Width="220">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate x:DataType="models:RospPreviewRow">
+                                        <Border Background="{Binding HasConflict, Converter={StaticResource ConflictBackgroundBrushConverter}}" Padding="8,0">
+                                            <TextBlock Text="{Binding FsspChiefsFullName}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
+                                        </Border>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTemplateColumn Header="Телефон" Width="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate x:DataType="models:RospPreviewRow">
+                                        <Border Background="{Binding HasConflict, Converter={StaticResource ConflictBackgroundBrushConverter}}" Padding="8,0">
+                                            <TextBlock Text="{Binding FsspTelephoneNumber}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
+                                        </Border>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTemplateColumn Header="Телефон поддержки" SortMemberPath="FsspPhoneOfHelpService" Width="180">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate x:DataType="models:RospPreviewRow">
+                                        <Border Background="{Binding HasConflict, Converter={StaticResource ConflictBackgroundBrushConverter}}" Padding="8,0">
+                                            <TextBlock Text="{Binding FsspPhoneOfHelpService}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
+                                        </Border>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTemplateColumn Header="Телефон поддержки 2" SortMemberPath="FsspPhoneOfHelpService2" Width="190">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate x:DataType="models:RospPreviewRow">
+                                        <Border Background="{Binding HasConflict, Converter={StaticResource ConflictBackgroundBrushConverter}}" Padding="8,0">
+                                            <TextBlock Text="{Binding FsspPhoneOfHelpService2}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
+                                        </Border>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTemplateColumn Header="Режим работы" SortMemberPath="FsspWorkHours" Width="300">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate x:DataType="models:RospPreviewRow">
+                                        <Border Background="{Binding HasConflict, Converter={StaticResource ConflictBackgroundBrushConverter}}" Padding="8,0">
+                                            <TextBlock Text="{Binding FsspWorkHours}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
+                                        </Border>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTemplateColumn Header="Проблема" SortMemberPath="ValidationError" Width="280">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate x:DataType="models:RospPreviewRow">
+                                        <Border Background="{Binding HasConflict, Converter={StaticResource ConflictBackgroundBrushConverter}}" Padding="8,0">
+                                            <TextBlock Text="{Binding ValidationError}" VerticalAlignment="Center" Foreground="#B91C1C" TextTrimming="CharacterEllipsis" />
+                                        </Border>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Border>
+            </TabItem>
+
+            <TabItem Header="SQL">
+                <Border
+                    Background="#FFFFFF"
+                    BorderBrush="#D8DEE8"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    Padding="12">
+                    <TextBox
+                        Text="{Binding SqlPreviewText}"
+                        IsReadOnly="True"
+                        AcceptsReturn="True"
+                        TextWrapping="NoWrap"
+                        FontFamily="Consolas"
+                        FontSize="13"
+                        ScrollViewer.VerticalScrollBarVisibility="Auto"
+                        ScrollViewer.HorizontalScrollBarVisibility="Auto" />
+                </Border>
+            </TabItem>
+        </TabControl>
+
+        <Border
+            Grid.Row="3"
+            Background="#FFFFFF"
+            BorderBrush="#D8DEE8"
+            BorderThickness="0,1,0,0"
+            Padding="20,10">
+
+            <Grid ColumnDefinitions="*,Auto">
+                <TextBlock
+                    Text="{Binding Status}"
+                    VerticalAlignment="Center"
+                    Foreground="#374151"
+                    TextTrimming="CharacterEllipsis" />
+
+                <TextBlock
+                    Grid.Column="1"
+                    Text="SQL формируется только по выбранным строкам без конфликтов по коду."
+                    VerticalAlignment="Center"
+                    Foreground="#6B7280" />
+            </Grid>
+        </Border>
+
+        <Border
+            Grid.RowSpan="4"
+            Background="#66000000"
+            Opacity="{Binding IsBusy, Converter={StaticResource BoolToOpacityConverter}}"
+            IsHitTestVisible="{Binding IsBusy}"
+            ZIndex="100">
+
+            <Border
+                Width="320"
+                Padding="24"
+                Background="#FFFFFF"
+                CornerRadius="8"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+
+                <StackPanel Spacing="14">
+                    <ProgressBar IsIndeterminate="True" Height="6" />
+
+                    <TextBlock
+                        Text="{Binding Status}"
+                        FontSize="14"
+                        FontWeight="SemiBold"
+                        TextAlignment="Center"
+                        TextWrapping="Wrap" />
+
+                    <TextBlock
+                        Text="Пожалуйста, подождите..."
+                        FontSize="12"
+                        Foreground="#6B7280"
+                        TextAlignment="Center" />
+                </StackPanel>
+            </Border>
+        </Border>
+    </Grid>
 </Window>

@@ -1,3 +1,4 @@
 <Solution>
   <Project Path="RospSqlGenerator.csproj" />
+  <Project Path="tests/RospSqlGenerator.Tests/RospSqlGenerator.Tests.csproj" />
 </Solution>
