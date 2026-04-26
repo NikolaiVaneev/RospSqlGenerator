@@ -295,13 +295,19 @@ public sealed partial class MainWindowViewModel : ViewModelBase
 
     private void RefreshFilteredRows()
     {
+        var sourceRows = ShowOnlyConflicts
+            ? Rows.Where(row => row.IsDuplicate).ToArray()
+            : Rows.ToArray();
+
+        if (_filteredRows.Count == sourceRows.Length &&
+            _filteredRows.SequenceEqual(sourceRows))
+        {
+            return;
+        }
+
         _filteredRows.Clear();
 
-        var rows = ShowOnlyConflicts
-            ? Rows.Where(row => row.IsDuplicate)
-            : Rows;
-
-        foreach (var row in rows)
+        foreach (var row in sourceRows)
         {
             _filteredRows.Add(row);
         }
