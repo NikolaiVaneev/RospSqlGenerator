@@ -15,6 +15,14 @@ MinHeight="650">
 
 	<Window.Resources>
 		<converters:ConflictBackgroundBrushConverter x:Key="ConflictBackgroundBrushConverter" />
+
+		<StreamGeometry x:Key="ExcelIconGeometry">
+			M2.85858 2.87732L15.4293 1.0815C15.7027 1.04245 15.9559 1.2324 15.995 1.50577C15.9983 1.52919 16 1.55282 16 1.57648V22.4235C16 22.6996 15.7761 22.9235 15.5 22.9235C15.4763 22.9235 15.4527 22.9218 15.4293 22.9184L2.85858 21.1226C2.36593 21.0522 2 20.6303 2 20.1327V3.86727C2 3.36962 2.36593 2.9477 2.85858 2.87732ZM4 4.73457V19.2654L14 20.694V3.30599L4 4.73457ZM17 19H20V4.99997H17V2.99997H21C21.5523 2.99997 22 3.44769 22 3.99997V20C22 20.5523 21.5523 21 21 21H17V19ZM10.2 12L13 16H10.6L9 13.7143L7.39999 16H5L7.8 12L5 7.99997H7.39999L9 10.2857L10.6 7.99997H13L10.2 12Z
+		</StreamGeometry>
+
+		<StreamGeometry x:Key="SaveIconGeometry">
+			M18 19H19V6.82843L17.1716 5H16V9H7V5H5V19H6V12H18V19ZM4 3H18L20.7071 5.70711C20.8946 5.89464 21 6.149 21 6.41421V20C21 20.5523 20.5523 21 20 21H4C3.44772 21 3 20.5523 3 20V4C3 3.44772 3.44772 3 4 3ZM8 14V19H16V14H8Z
+		</StreamGeometry>
 	</Window.Resources>
 
 	<Window.Styles>
@@ -32,7 +40,7 @@ MinHeight="650">
 
 		<Style Selector="Button.action-button">
 			<Setter Property="Height" Value="38" />
-			<Setter Property="MinWidth" Value="150" />
+			<Setter Property="MinWidth" Value="155" />
 			<Setter Property="Padding" Value="16,0" />
 			<Setter Property="CornerRadius" Value="8" />
 			<Setter Property="FontSize" Value="13" />
@@ -46,24 +54,33 @@ MinHeight="650">
 
 		<Style Selector="Button.primary:pointerover">
 			<Setter Property="Background" Value="#1D4ED8" />
+			<Setter Property="Foreground" Value="White" />
 		</Style>
 
 		<Style Selector="Button.primary:pressed">
 			<Setter Property="Background" Value="#1E40AF" />
+			<Setter Property="Foreground" Value="White" />
 		</Style>
 
 		<Style Selector="Button.secondary">
 			<Setter Property="Background" Value="#E5E7EB" />
-			<Setter Property="Foreground" Value="#111827" />
+			<Setter Property="Foreground" Value="#374151" />
 		</Style>
 
 		<Style Selector="Button.secondary:pointerover">
 			<Setter Property="Background" Value="#D1D5DB" />
+			<Setter Property="Foreground" Value="#111827" />
+		</Style>
+
+		<Style Selector="Button.secondary:pressed">
+			<Setter Property="Background" Value="#CBD5E1" />
+			<Setter Property="Foreground" Value="#111827" />
 		</Style>
 
 		<Style Selector="Button:disabled">
 			<Setter Property="Opacity" Value="0.55" />
 		</Style>
+
 	</Window.Styles>
 
 	<Grid RowDefinitions="Auto,Auto,*,Auto"
@@ -98,9 +115,11 @@ MinHeight="650">
 						<StackPanel Orientation="Horizontal"
 									Spacing="8"
 									VerticalAlignment="Center">
-							<TextBlock Text="📂"
-									   FontSize="14"
-									   VerticalAlignment="Center" />
+							<PathIcon Data="{StaticResource ExcelIconGeometry}"
+									  Width="18"
+									  Height="18"
+									  Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+									  VerticalAlignment="Center" />
 							<TextBlock Text="Загрузить xlsx"
 									   VerticalAlignment="Center" />
 						</StackPanel>
@@ -111,9 +130,11 @@ MinHeight="650">
 						<StackPanel Orientation="Horizontal"
 									Spacing="8"
 									VerticalAlignment="Center">
-							<TextBlock Text="💾"
-									   FontSize="14"
-									   VerticalAlignment="Center" />
+							<PathIcon Data="{StaticResource SaveIconGeometry}"
+									  Width="18"
+									  Height="18"
+									  Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+									  VerticalAlignment="Center" />
 							<TextBlock Text="Сохранить SQL"
 									   VerticalAlignment="Center" />
 						</StackPanel>
