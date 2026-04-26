@@ -52,14 +52,38 @@ MinHeight="650">
 			<Setter Property="Foreground" Value="White" />
 		</Style>
 
-		<Style Selector="Button.primary:pointerover">
-			<Setter Property="Background" Value="#1D4ED8" />
+		<Style Selector="Button.primary PathIcon">
 			<Setter Property="Foreground" Value="White" />
 		</Style>
 
-		<Style Selector="Button.primary:pressed">
-			<Setter Property="Background" Value="#1E40AF" />
+		<Style Selector="Button.primary TextBlock">
 			<Setter Property="Foreground" Value="White" />
+		</Style>
+
+		<Style Selector="Button.primary:pointerover">
+			<Setter Property="Background" Value="#E5E7EB" />
+			<Setter Property="Foreground" Value="#111827" />
+		</Style>
+
+		<Style Selector="Button.primary:pointerover PathIcon">
+			<Setter Property="Foreground" Value="#111827" />
+		</Style>
+
+		<Style Selector="Button.primary:pointerover TextBlock">
+			<Setter Property="Foreground" Value="#111827" />
+		</Style>
+
+		<Style Selector="Button.primary:pressed">
+			<Setter Property="Background" Value="#D1D5DB" />
+			<Setter Property="Foreground" Value="#111827" />
+		</Style>
+
+		<Style Selector="Button.primary:pressed PathIcon">
+			<Setter Property="Foreground" Value="#111827" />
+		</Style>
+
+		<Style Selector="Button.primary:pressed TextBlock">
+			<Setter Property="Foreground" Value="#111827" />
 		</Style>
 
 		<Style Selector="Button.secondary">
@@ -110,7 +134,7 @@ MinHeight="650">
 							Spacing="10"
 							VerticalAlignment="Center">
 
-					<Button Command="{Binding LoadCommand}"
+					<Button Command="{Binding LoadCommand}" Cursor="Hand"
 							Classes="action-button primary">
 						<StackPanel Orientation="Horizontal"
 									Spacing="8"
@@ -118,14 +142,13 @@ MinHeight="650">
 							<PathIcon Data="{StaticResource ExcelIconGeometry}"
 									  Width="18"
 									  Height="18"
-									  Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
 									  VerticalAlignment="Center" />
 							<TextBlock Text="Загрузить xlsx"
 									   VerticalAlignment="Center" />
 						</StackPanel>
 					</Button>
 
-					<Button Command="{Binding SaveCommand}"
+					<Button Command="{Binding SaveCommand}" Cursor="Hand"
 							Classes="action-button secondary">
 						<StackPanel Orientation="Horizontal"
 									Spacing="8"
@@ -202,10 +225,10 @@ MinHeight="650">
 						<StackPanel Grid.Column="4" Orientation="Horizontal" Spacing="20"
 									HorizontalAlignment="Right"
 									VerticalAlignment="Center">
-							<CheckBox Content="Только группы дублей"
+							<CheckBox Content="Только группы дублей" FontSize="13"
 									  IsChecked="{Binding ShowOnlyConflicts}" />
 
-							<CheckBox Content="Выбрать все"
+							<CheckBox Content="Выбрать все" FontSize="13"
 									  IsThreeState="True"
 									  IsChecked="{Binding SelectAllState, Mode=TwoWay}" />
 						</StackPanel>
