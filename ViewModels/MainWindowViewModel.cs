@@ -107,6 +107,7 @@ public sealed partial class MainWindowViewModel : ViewModelBase
         {
             IsBusy = true;
             Status = "Чтение xlsx-файла...";
+            await Task.Yield();
 
             ClearCurrentData();
 
@@ -178,6 +179,7 @@ public sealed partial class MainWindowViewModel : ViewModelBase
         {
             IsBusy = true;
             Status = "Формирование SQL-скрипта...";
+            await Task.Yield();
 
             var selectedRows = Rows
                 .Where(row => row.IsSelected)
