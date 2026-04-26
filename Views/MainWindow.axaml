@@ -29,6 +29,41 @@ MinHeight="650">
 			<Setter Property="FontSize" Value="12" />
 			<Setter Property="Padding" Value="0" />
 		</Style>
+
+		<Style Selector="Button.action-button">
+			<Setter Property="Height" Value="38" />
+			<Setter Property="MinWidth" Value="150" />
+			<Setter Property="Padding" Value="16,0" />
+			<Setter Property="CornerRadius" Value="8" />
+			<Setter Property="FontSize" Value="13" />
+			<Setter Property="FontWeight" Value="SemiBold" />
+		</Style>
+
+		<Style Selector="Button.primary">
+			<Setter Property="Background" Value="#2563EB" />
+			<Setter Property="Foreground" Value="White" />
+		</Style>
+
+		<Style Selector="Button.primary:pointerover">
+			<Setter Property="Background" Value="#1D4ED8" />
+		</Style>
+
+		<Style Selector="Button.primary:pressed">
+			<Setter Property="Background" Value="#1E40AF" />
+		</Style>
+
+		<Style Selector="Button.secondary">
+			<Setter Property="Background" Value="#E5E7EB" />
+			<Setter Property="Foreground" Value="#111827" />
+		</Style>
+
+		<Style Selector="Button.secondary:pointerover">
+			<Setter Property="Background" Value="#D1D5DB" />
+		</Style>
+
+		<Style Selector="Button:disabled">
+			<Setter Property="Opacity" Value="0.55" />
+		</Style>
 	</Window.Styles>
 
 	<Grid RowDefinitions="Auto,Auto,*,Auto"
@@ -59,18 +94,30 @@ MinHeight="650">
 							VerticalAlignment="Center">
 
 					<Button Command="{Binding LoadCommand}"
-							Content="Загрузить xlsx"
-							VerticalContentAlignment="Center"
-							HorizontalContentAlignment="Center"
-							MinWidth="140"
-							Height="36" />
+							Classes="action-button primary">
+						<StackPanel Orientation="Horizontal"
+									Spacing="8"
+									VerticalAlignment="Center">
+							<TextBlock Text="📂"
+									   FontSize="14"
+									   VerticalAlignment="Center" />
+							<TextBlock Text="Загрузить xlsx"
+									   VerticalAlignment="Center" />
+						</StackPanel>
+					</Button>
 
 					<Button Command="{Binding SaveCommand}"
-							Content="Сохранить SQL"
-							VerticalContentAlignment="Center"
-							HorizontalContentAlignment="Center"
-							MinWidth="140"
-							Height="36" />
+							Classes="action-button secondary">
+						<StackPanel Orientation="Horizontal"
+									Spacing="8"
+									VerticalAlignment="Center">
+							<TextBlock Text="💾"
+									   FontSize="14"
+									   VerticalAlignment="Center" />
+							<TextBlock Text="Сохранить SQL"
+									   VerticalAlignment="Center" />
+						</StackPanel>
+					</Button>
 				</StackPanel>
 			</Grid>
 		</Border>
