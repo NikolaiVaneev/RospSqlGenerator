@@ -1,8 +1,7 @@
-﻿using ReactiveUI;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace RospSqlGenerator.ViewModels
+namespace RospSqlGenerator.ViewModels;
+
+public abstract class ViewModelBase : ObservableObject
 {
-    public abstract class ViewModelBase : ReactiveObject
-    {
-    }
 }

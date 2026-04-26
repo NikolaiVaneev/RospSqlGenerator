@@ -8,5 +8,5 @@ namespace RospSqlGenerator.Abstractions;
 /// </summary>
 public interface IRospSqlGenerator
 {
-    string Generate(IReadOnlyCollection<RospPreviewRow> rows);
+    string Generate(IReadOnlyCollection<RospImportRow> rows);
 }
