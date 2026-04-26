@@ -220,11 +220,12 @@ public sealed partial class MainWindowViewModel : ViewModelBase
     partial void OnShowOnlyConflictsChanged(bool value)
     {
         RefreshFilteredRows();
+        UpdateSelectAllState();
     }
 
     private void SetAllSelected(bool isSelected)
     {
-        foreach (var row in Rows)
+        foreach (var row in GetSelectionScopeRows())
         {
             row.IsSelected = isSelected;
         }
@@ -315,6 +316,13 @@ public sealed partial class MainWindowViewModel : ViewModelBase
         }
     }
 
+    private RospPreviewRow[] GetSelectionScopeRows()
+    {
+        return ShowOnlyConflicts
+            ? Rows.Where(row => row.IsDuplicate).ToArray()
+            : Rows.ToArray();
+    }
+
     private void UpdateSelectAllState()
     {
         _isUpdatingSelectAllState = true;
@@ -331,19 +339,21 @@ public sealed partial class MainWindowViewModel : ViewModelBase
 
     private bool? ResolveSelectAllState()
     {
-        if (Rows.Count == 0)
+        var selectionScopeRows = GetSelectionScopeRows();
+
+        if (selectionScopeRows.Length == 0)
         {
             return false;
         }
 
-        var selectedRowsCount = Rows.Count(row => row.IsSelected);
+        var selectedRowsCount = selectionScopeRows.Count(row => row.IsSelected);
 
         if (selectedRowsCount == 0)
         {
             return false;
         }
 
-        if (selectedRowsCount == Rows.Count)
+        if (selectedRowsCount == selectionScopeRows.Length)
         {
             return true;
         }
