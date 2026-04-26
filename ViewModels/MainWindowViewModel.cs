@@ -20,6 +20,7 @@ public sealed partial class MainWindowViewModel : ViewModelBase
     private readonly IRospWorkbookReader _workbookReader;
     private readonly IRospSqlGenerator _sqlGenerator;
     private readonly IFileDialogService _fileDialogService;
+    private readonly ObservableCollection<RospPreviewRow> _filteredRows = new();
 
     private bool _isUpdatingSelectAllState;
 
@@ -31,12 +32,16 @@ public sealed partial class MainWindowViewModel : ViewModelBase
         _workbookReader = workbookReader;
         _sqlGenerator = sqlGenerator;
         _fileDialogService = fileDialogService;
+
+        FilteredRows = new ReadOnlyObservableCollection<RospPreviewRow>(_filteredRows);
     }
 
     /// <summary>
     /// Строки предпросмотра, загруженные из xlsx-файла.
     /// </summary>
     public ObservableCollection<RospPreviewRow> Rows { get; } = new();
+
+    public ReadOnlyObservableCollection<RospPreviewRow> FilteredRows { get; }
 
     /// <summary>
     /// Сообщения импорта: ошибки и предупреждения.
@@ -59,6 +64,9 @@ public sealed partial class MainWindowViewModel : ViewModelBase
 
     [ObservableProperty]
     private bool? selectAllState = false;
+
+    [ObservableProperty]
+    private bool showOnlyConflicts;
 
     [ObservableProperty]
     private int totalCount;
@@ -84,9 +92,6 @@ public sealed partial class MainWindowViewModel : ViewModelBase
 
     private bool CanSaveSql() => CanSave && !IsBusy;
 
-    /// <summary>
-    /// Загружает xlsx-файл, выполняет парсинг и пересчитывает состояние конфликтов.
-    /// </summary>
     [RelayCommand(CanExecute = nameof(CanLoad))]
     private async Task LoadAsync()
     {
@@ -210,6 +215,11 @@ public sealed partial class MainWindowViewModel : ViewModelBase
         SetAllSelected(value.Value);
     }
 
+    partial void OnShowOnlyConflictsChanged(bool value)
+    {
+        RefreshFilteredRows();
+    }
+
     private void SetAllSelected(bool isSelected)
     {
         foreach (var row in Rows)
@@ -267,6 +277,7 @@ public sealed partial class MainWindowViewModel : ViewModelBase
         ConflictCount = duplicateGroups.Count(group => group.Count(row => row.IsSelected) != 1);
 
         UpdateSelectAllState();
+        RefreshFilteredRows();
 
         CanSave =
             !IsBusy &&
@@ -280,6 +291,20 @@ public sealed partial class MainWindowViewModel : ViewModelBase
 
         LoadCommand.NotifyCanExecuteChanged();
         SaveCommand.NotifyCanExecuteChanged();
+    }
+
+    private void RefreshFilteredRows()
+    {
+        _filteredRows.Clear();
+
+        var rows = ShowOnlyConflicts
+            ? Rows.Where(row => row.HasConflict)
+            : Rows;
+
+        foreach (var row in rows)
+        {
+            _filteredRows.Add(row);
+        }
     }
 
     private void UpdateSelectAllState()
@@ -326,6 +351,7 @@ public sealed partial class MainWindowViewModel : ViewModelBase
         }
 
         Rows.Clear();
+        _filteredRows.Clear();
         Messages.Clear();
 
         LoadedFilePath = null;

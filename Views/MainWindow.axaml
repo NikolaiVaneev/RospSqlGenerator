@@ -1,17 +1,17 @@
 <Window
-	x:Class="RospSqlGenerator.Views.MainWindow"
-	xmlns="https://github.com/avaloniaui"
-	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:converters="using:RospSqlGenerator.Converters"
-	xmlns:models="using:RospSqlGenerator.Models"
-	xmlns:vm="using:RospSqlGenerator.ViewModels"
-	x:DataType="vm:MainWindowViewModel"
-	Title="Генератор SQL обновления РОСП"
-	WindowStartupLocation="CenterScreen"
-	Width="1400"
-	Height="820"
-	MinWidth="1100"
-	MinHeight="650">
+x:Class="RospSqlGenerator.Views.MainWindow"
+xmlns="https://github.com/avaloniaui"
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+xmlns:converters="using:RospSqlGenerator.Converters"
+xmlns:models="using:RospSqlGenerator.Models"
+xmlns:vm="using:RospSqlGenerator.ViewModels"
+x:DataType="vm:MainWindowViewModel"
+Title="Генератор SQL обновления РОСП"
+WindowStartupLocation="CenterScreen"
+Width="1400"
+Height="820"
+MinWidth="1100"
+MinHeight="650">
 
 	<Window.Resources>
 		<converters:ConflictBackgroundBrushConverter x:Key="ConflictBackgroundBrushConverter" />
@@ -131,9 +131,12 @@
 									   Foreground="#B91C1C" />
 						</StackPanel>
 
-						<StackPanel Grid.Column="4"
+						<StackPanel Grid.Column="4" Orientation="Horizontal" Spacing="20"
 									HorizontalAlignment="Right"
 									VerticalAlignment="Center">
+							<CheckBox Content="Только конфликты"
+									  IsChecked="{Binding ShowOnlyConflicts}" />
+
 							<CheckBox Content="Выбрать все"
 									  IsThreeState="True"
 									  IsChecked="{Binding SelectAllState, Mode=TwoWay}" />
@@ -195,7 +198,7 @@
 				ClipToBounds="True">
 
 			<DataGrid x:Name="RospsGrid"
-					  ItemsSource="{Binding Rows}"
+					  ItemsSource="{Binding FilteredRows}"
 					  AutoGenerateColumns="False"
 					  CanUserResizeColumns="True"
 					  CanUserSortColumns="True"
