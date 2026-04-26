@@ -1,21 +1,35 @@
 <Window
-x:Class="RospSqlGenerator.Views.MainWindow"
-xmlns="https://github.com/avaloniaui"
-xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-xmlns:converters="using:RospSqlGenerator.Converters"
-xmlns:models="using:RospSqlGenerator.Models"
-xmlns:vm="using:RospSqlGenerator.ViewModels"
-x:DataType="vm:MainWindowViewModel"
-Title="Генератор SQL обновления РОСП"
-WindowStartupLocation="CenterScreen"
-Width="1400"
-Height="820"
-MinWidth="1100"
-MinHeight="650">
+	x:Class="RospSqlGenerator.Views.MainWindow"
+	xmlns="https://github.com/avaloniaui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:converters="using:RospSqlGenerator.Converters"
+	xmlns:models="using:RospSqlGenerator.Models"
+	xmlns:vm="using:RospSqlGenerator.ViewModels"
+	x:DataType="vm:MainWindowViewModel"
+	Title="Генератор SQL обновления РОСП"
+	WindowStartupLocation="CenterScreen"
+	Width="1400"
+	Height="820"
+	MinWidth="1100"
+	MinHeight="650">
 
 	<Window.Resources>
 		<converters:ConflictBackgroundBrushConverter x:Key="ConflictBackgroundBrushConverter" />
 	</Window.Resources>
+
+	<Window.Styles>
+		<Style Selector="DataGridColumnHeader">
+			<Setter Property="FontSize" Value="12" />
+			<Setter Property="FontWeight" Value="Normal" />
+			<Setter Property="MinHeight" Value="26" />
+			<Setter Property="Padding" Value="6,0" />
+		</Style>
+
+		<Style Selector="DataGridCell">
+			<Setter Property="FontSize" Value="12" />
+			<Setter Property="Padding" Value="0" />
+		</Style>
+	</Window.Styles>
 
 	<Grid RowDefinitions="Auto,Auto,*,Auto"
 		  Background="#F5F7FA">
@@ -64,7 +78,7 @@ MinHeight="650">
 		<!-- Сводка и сообщения -->
 		<Grid Grid.Row="1"
 			  ColumnDefinitions="*,Auto"
-			  Margin="20,16,20,12">
+			  Margin="20,16,20,4">
 
 			<StackPanel Spacing="10">
 				<Border Background="#FFFFFF"
@@ -242,8 +256,7 @@ MinHeight="650">
 								<Border Background="{Binding HasConflict, Converter={StaticResource ConflictBackgroundBrushConverter}}"
 										Padding="8,0">
 									<TextBlock Text="{Binding Code}"
-											   VerticalAlignment="Center"
-											   FontWeight="SemiBold" />
+											   VerticalAlignment="Center" />
 								</Border>
 							</DataTemplate>
 						</DataGridTemplateColumn.CellTemplate>
