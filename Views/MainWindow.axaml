@@ -134,7 +134,7 @@ MinHeight="650">
 						<StackPanel Grid.Column="4" Orientation="Horizontal" Spacing="20"
 									HorizontalAlignment="Right"
 									VerticalAlignment="Center">
-							<CheckBox Content="Только конфликты"
+							<CheckBox Content="Только группы дублей"
 									  IsChecked="{Binding ShowOnlyConflicts}" />
 
 							<CheckBox Content="Выбрать все"

@@ -298,7 +298,7 @@ public sealed partial class MainWindowViewModel : ViewModelBase
         _filteredRows.Clear();
 
         var rows = ShowOnlyConflicts
-            ? Rows.Where(row => row.HasConflict)
+            ? Rows.Where(row => row.IsDuplicate)
             : Rows;
 
         foreach (var row in rows)
